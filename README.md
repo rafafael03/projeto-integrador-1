@@ -29,5 +29,5 @@ O front-end da aplicação é automaticamente atualizado quando um novo usuário
 ## Acesso
 
 Como dito anteriormente, a aplicação está hospedada usando o Firebase Hosting, por tanto para acessá-la basta seguir um dos links disponibilizados:
-- [projeto-integrador-1.firebaseapp.com](projeto-integrador-1.firebaseapp.com)
-- [projeto-integrador-1.web.app](projeto-integrador-1.web.app) (a partir de 22/05/2019)
+- [projeto-integrador-1.firebaseapp.com](https://projeto-integrador-1.firebaseapp.com)
+- [projeto-integrador-1.web.app](https://projeto-integrador-1.web.app) (a partir de 22/05/2019)
