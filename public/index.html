@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+     <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-firestore.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyA4y6vGy8MChAw5B3O8G4m1N5hZTvTOq3A",
+        authDomain: "projeto-integrador-1.firebaseapp.com",
+        databaseURL: "https://projeto-integrador-1.firebaseio.com",
+        projectId: "projeto-integrador-1",
+        storageBucket: "projeto-integrador-1.appspot.com",
+        messagingSenderId: "76139155305",
+        appId: "1:76139155305:web:698bc1626e899707"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <style>
+        .usuario {
+            width:200px;
+            height:50px;
+            border: 1px solid black;
+            border-radius: 3px;
+            margin: 20px auto 0px;
+            text-align: center;
+            line-height: 50px;
+        }
+        .usuario:hover {
+            cursor: pointer;
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+<body style="padding: 0px; margin: 0px;">
+
+  <div id="container" style="width: 100%; padding: 10px 20px; text-align: center; margin: auto">
+    <h3>Insira um nome:</h3>
+    <input id="nome" type="text" style="width: 200px;">
+    <div id="conteudo"></div>
+  </div>
+
+  <script>
+    const db = firebase.firestore();
+    db.collection("usuarios").onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const type = change.type;
+        const doc = change.doc;
+        let elem;
+
+        switch (type) {
+          case 'added':
+            const conteudo = document.querySelector('#conteudo');
+            const onclick = `db.collection('usuarios').doc('${doc.id}').delete()`;
+            conteudo.innerHTML = conteudo.innerHTML + `<div id="${doc.id}" onclick="${onclick}" class="usuario">${doc.data().nome}</div>`;
+            break;
+          case 'modified':
+            elem = document.querySelector(`#container #${doc.id}`);
+            elem.innerHTML = doc.data().nome;
+            break;
+          case 'removed':
+            elem = document.querySelector(`#container #${doc.id}`);
+            elem.parentNode.removeChild(elem);
+            break;
+        }
+      });
+    });
+  </script>
+  <script>
+    const input = document.querySelector('#nome');
+    input.addEventListener('keyup', event => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            ajax(`https://us-central1-projeto-integrador-1.cloudfunctions.net/adicionaUsuario?nome=${input.value}`);
+            input.value = '';
+        }
+    });
+  </script>
+  <script>
+    function ajax(url) {
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", url, true);
+      xhttp.send();
+    }
+  </script>
+</body>
+</html>
+
